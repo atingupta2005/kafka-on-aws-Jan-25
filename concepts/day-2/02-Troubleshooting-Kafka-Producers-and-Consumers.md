@@ -11,14 +11,13 @@ Despite Kafka's robustness, producers and consumers can encounter issues such as
 - **Description:** Duplicate messages are produced or consumed, leading to potential data inconsistencies.
 
 **Causes:**
-- Producer retries with `acks=1` or `acks=0`, where the broker acknowledges a write but the producer retries due to a timeout.
+- Producer retries with `acks=1`, where the broker acknowledges a write but the producer retries due to a timeout.
 - Consumers failing to commit offsets and reprocessing messages upon restart.
 
 **Solutions:**
 1. Enable **idempotence** on producers (`enable.idempotence=true`):
    - Ensures exactly-once delivery by preventing duplicate messages at the producer level.
-2. Use **transactions** for atomic writes across multiple topics or partitions.
-3. Ensure consumers explicitly commit offsets after processing messages to avoid reprocessing on restart.
+2. Ensure consumers explicitly commit offsets after processing messages to avoid reprocessing on restart.
 
 ##### **2. Lost Messages**
 - **Description:** Messages sent by the producer do not appear in the topic or are not consumed.
@@ -26,7 +25,7 @@ Despite Kafka's robustness, producers and consumers can encounter issues such as
 **Causes:**
 - Producer configurations like `acks=0` (fire-and-forget).
 - Insufficient replication factor, leading to data loss during broker failures.
-- Consumers fail to read due to incorrect group IDs or subscription issues.
+- Consumers fail to read due to incorrect group IDs
 
 **Solutions:**
 1. Set `acks=all` in producer configurations to ensure all replicas acknowledge writes.
@@ -45,8 +44,7 @@ Despite Kafka's robustness, producers and consumers can encounter issues such as
 **Solutions:**
 1. **Add more consumers to the group:** Ensure the number of consumers does not exceed the number of partitions.
 2. Optimize consumer logic to reduce message processing time.
-3. Use **async commits** for offsets to improve throughput.
-4. Monitor consumer lag using tools like Kafka Manager, Prometheus, or Confluent Control Center.
+3. Monitor consumer lag
 
 ---
 
@@ -59,21 +57,16 @@ Despite Kafka's robustness, producers and consumers can encounter issues such as
 ##### **How to Monitor Kafka Lag**
 1. **Kafka Consumer Offset Topic:**
    - Kafka tracks consumer offsets in the `__consumer_offsets` topic.
-2. **Monitoring Tools:**
-   - Use tools like Prometheus, Grafana, or Confluent Control Center to visualize consumer lag.
-3. **CLI Command:**
+2. **CLI Command:**
    - Run the following command to check lag:
      ```bash
      kafka-consumer-groups.sh --bootstrap-server <broker> --describe --group <group_id>
      ```
 
 ##### **Strategies to Reduce Lag**
-1. Increase **consumer throughput:**
-   - Tune `fetch.min.bytes` and `fetch.max.wait.ms` to reduce latency between fetches.
-   - Use multithreading in consumer applications to parallelize processing.
-2. Scale out by **adding consumers:**
+1. Scale out by **adding consumers:**
    - Add more consumers to the group to distribute the workload.
-3. **Optimize message production:**
+2. **Optimize message production:**
    - Avoid overly large messages and batch writes to improve throughput.
 
 ---
@@ -98,8 +91,6 @@ Despite Kafka's robustness, producers and consumers can encounter issues such as
    - Extend the session timeout (`session.timeout.ms`) to prevent premature consumer removal.
 3. **Optimize Partition Assignments:**
    - Use sticky partition assignments to reduce partition movement during rebalancing.
-4. **Monitor Consumer Stability:**
-   - Track consumer crashes and ensure proper resource allocation for stable operation.
 
 ---
 

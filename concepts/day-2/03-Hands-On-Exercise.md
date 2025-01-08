@@ -1,7 +1,6 @@
 ### Hands-On Exercise: Debugging Kafka Producer and Consumer Issues
 
 #### **Objective**
-By the end of this hands-on exercise, you will:
 1. Identify and debug common producer and consumer issues in a Kafka sandbox environment.
 2. Apply best practices to resolve issues such as message duplication, consumer lag, and connection errors.
 
@@ -139,21 +138,9 @@ kafka-topics.sh --create \
 
 ---
 
-### **Step 4: Monitoring and Logging**
-
-##### **4.1 Monitor Kafka Metrics**
-Use tools like Prometheus and Grafana to visualize key metrics:
-- **Producer Metrics:** Request latency, message retries.
-- **Consumer Metrics:** Lag, fetch rate.
-- **Broker Metrics:** Partition leadership, under-replicated partitions.
-
-##### **4.2 Analyze Logs**
-1. Check producer and consumer logs for errors.
-2. Inspect Kafka broker logs for replication and leader election issues.
-
 ---
 
-### **Step 5: Cleanup**
+### **Step 4: Cleanup**
 1. Delete the topic:
    ```bash
    kafka-topics.sh --bootstrap-server $BS_SERVER --delete --topic debug-topic
