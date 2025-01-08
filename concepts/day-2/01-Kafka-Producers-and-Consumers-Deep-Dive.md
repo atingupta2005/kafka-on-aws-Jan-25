@@ -1,7 +1,7 @@
 ### Kafka Producers and Consumers Deep Dive
 
 #### **Introduction**
-Kafka Producers and Consumers are the fundamental building blocks of any Kafka-based data pipeline. Producers send data to Kafka topics, while consumers subscribe to topics to process the data. This document dives deep into their configurations, behaviors, and real-world use cases to maximize throughput, reliability, and scalability.
+Kafka Producers and Consumers are the fundamental building blocks of any Kafka-based data pipeline. Producers send data to Kafka topics, while consumers subscribe to topics to process the data.
 
 ---
 
