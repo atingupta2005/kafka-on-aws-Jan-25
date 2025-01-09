@@ -25,7 +25,7 @@
    ```
 4. Verify the connection by listing the topics:
    ```bash
-   kafka-topics.sh --bootstrap-server <bootstrap-servers> --list --command-config client.properties
+   kafka-topics.sh --bootstrap-server $BS_SERVER --list --command-config client.properties
    ```
 
 ---

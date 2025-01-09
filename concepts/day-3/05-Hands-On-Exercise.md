@@ -51,7 +51,7 @@ This hands-on exercise will guide you through:
 1. Use the Kafka CLI to create a topic named `test-topic`:
    ```bash
    kafka-topics.sh --create \
-       --bootstrap-server <bootstrap-servers> \
+       --bootstrap-server $BS_SERVER \
        --replication-factor 3 \
        --partitions 3 \
        --topic test-topic \
@@ -61,14 +61,14 @@ This hands-on exercise will guide you through:
 2. Verify that the topic has been created:
    ```bash
    kafka-topics.sh --list \
-       --bootstrap-server <bootstrap-servers> \
+       --bootstrap-server $BS_SERVER \
        --command-config client.properties
    ```
 
 ##### **Step 1.4: Start a Producer and Consumer**
 1. **Start a Producer:**
    ```bash
-   kafka-console-producer.sh --broker-list <bootstrap-servers> \
+   kafka-console-producer.sh --broker-list $BS_SERVER \
        --topic test-topic \
        --producer.config client.properties
    ```
@@ -76,7 +76,7 @@ This hands-on exercise will guide you through:
 
 2. **Start a Consumer:**
    ```bash
-   kafka-console-consumer.sh --bootstrap-server <bootstrap-servers> \
+   kafka-console-consumer.sh --bootstrap-server $BS_SERVER \
        --topic test-topic \
        --from-beginning \
        --consumer.config client.properties
@@ -142,7 +142,7 @@ This hands-on exercise will guide you through:
 1. Delete the Kafka topic:
    ```bash
    kafka-topics.sh --delete \
-       --bootstrap-server <bootstrap-servers> \
+       --bootstrap-server $BS_SERVER \
        --topic test-topic \
        --command-config client.properties
    ```
