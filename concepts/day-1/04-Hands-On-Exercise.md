@@ -29,6 +29,7 @@ By the end of this hands-on exercise, you will:
 ```
 sudo yum update -y
 sudo yum install java-11-amazon-corretto-devel -y
+cd ~
 wget https://archive.apache.org/dist/kafka/3.6.0/kafka_2.13-3.6.0.tgz
 tar -xzf kafka_2.13-3.6.0.tgz
 sudo mkdir -p /usr/local/kafka
@@ -120,6 +121,16 @@ kafka-topics.sh --bootstrap-server $BS_SERVER --list --command-config /usr/local
    kafka-topics.sh --bootstrap-server $BS_SERVER --delete --topic test-topic
    ```
 2. Delete the MSK cluster from the AWS Management Console to avoid incurring charges.
+
+```
+cd ~
+sudo rm -rf /usr/local/kafka
+rm -rf kafka_2.13-3.6.0*
+rm client.properties
+ls
+nano ~/.bashrc
+   - Remove last 2 lines
+```
 
 ---
 
