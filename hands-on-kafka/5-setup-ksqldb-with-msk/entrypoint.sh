@@ -5,5 +5,4 @@ if [ "$DEBUG_MODE" = "true" ]; then
   tail -f /dev/null  # Keeps the container running for debugging
 else
   echo "Starting ksqlDB Server..."
-  exec /etc/confluent/docker/ksqldb-server  # Correct entrypoint for ksqlDB
 fi
