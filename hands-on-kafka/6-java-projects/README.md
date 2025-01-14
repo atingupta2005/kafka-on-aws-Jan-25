@@ -93,10 +93,14 @@ Run the `ProducerDemo` class:
    ```bash
    ../gradlew run -PmainClass=io.conduktor.demos.kafka.ProducerDemo
    ```
+
+```bash
+../gradlew run -PmainClass=io.conduktor.demos.kafka.ProducerDemoWithCallback
+../gradlew run -PmainClass=io.conduktor.demos.kafka.ProducerDemoKeys
+../gradlew run -PmainClass=io.conduktor.demos.kafka.ConsumerDemo
+../gradlew run -PmainClass=io.conduktor.demos.kafka.ConsumerDemoWithShutdown
+../gradlew run -PmainClass=io.conduktor.demos.kafka.ConsumerDemoCooperative
+```
+
+
 ---
-
-### **5. Verify Output**
-- If the code runs successfully, you’ll see log output indicating that the producer sent the message.
-- Use Kafka tools (e.g., `kafka-console-consumer.sh`) to check the `demo_java` topic for the sent message.
-
-Let me know if you encounter any issues!
