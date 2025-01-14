@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  ksqldb-server:
+    build: .
+    ports:
+      - "${KSQLDB_SERVER_PORT}:${KSQLDB_SERVER_PORT}"
+    environment:
+      KSQL_CONFIG_DIR: /etc/ksqldb
+      KSQL_BOOTSTRAP_SERVERS: ${KSQL_BOOTSTRAP_SERVERS}
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ./ksql-config:/etc/ksqldb
+
+  ksqldb-ui:
+    image: deniskrumko/ksqldb-ui:latest
+    environment:
+      APP_CONFIG: /config.toml
+    volumes:
+      - ./development.toml:/config.toml
+    ports:
+      - 8080:8080

@@ -23,7 +23,6 @@ ksqlDB is a purpose-built, open-source database designed for real-time stream pr
    ```dockerfile
    FROM confluentinc/ksqldb-server:latest
    EXPOSE 8088
-   CMD ["/etc/confluent/docker/run"]
    ```
 
 2. **Create a `docker-compose.yml` File:**
@@ -40,7 +39,6 @@ ksqlDB is a purpose-built, open-source database designed for real-time stream pr
          AWS_REGION: <your-region>
          AWS_ACCESS_KEY_ID: <your-access-key-id>
          AWS_SECRET_ACCESS_KEY: <your-secret-access-key>
-         AWS_SESSION_TOKEN: <your-session-token> # If using temporary credentials
        volumes:
          - ./ksql-config:/etc/ksqldb
 
@@ -117,12 +115,14 @@ ksqlDB is a purpose-built, open-source database designed for real-time stream pr
 #### **Steps to Install ksqlDB-UI with Docker Compose**
 1. **Ensure ksqlDB-UI is Defined in `docker-compose.yml`:**
    ```yaml
-   ksqldb-ui:
-     image: quay.io/ksqldb/ksqldb-ui:latest
-     ports:
-       - "8089:8080"
-     environment:
-       KSQLDB_SERVER: http://ksqldb-server:8088
+      ksqldb-ui:
+        image: deniskrumko/ksqldb-ui:latest
+        environment:
+          APP_CONFIG: /config.toml
+        volumes:
+          - ./development.toml:/config.toml
+        ports:
+          - 8080:8080
    ```
 
 2. **Run the UI Service:**

@@ -1,3 +1,0 @@
-FROM confluentinc/cp-zookeeper:latest
-EXPOSE 2181
-CMD ["zookeeper-server-start", "/etc/kafka/zookeeper.properties"]

@@ -1,5 +1,0 @@
-app:
-  server:
-    baseUrl: "http://${CLOUD_VM_PUBLIC_IP}:${KSQLDB_UI_PORT}"
-  ksql:
-    serverUrl: "http://${CLOUD_VM_PUBLIC_IP}:${KSQLDB_SERVER_PORT}"
