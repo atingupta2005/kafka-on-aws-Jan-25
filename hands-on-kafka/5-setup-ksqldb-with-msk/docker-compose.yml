@@ -19,5 +19,6 @@ services:
       APP_CONFIG: /config.toml
     volumes:
       - ./development.toml:/config.toml
+      
     ports:
       - 8080:8080
