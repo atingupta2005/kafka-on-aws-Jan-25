@@ -1,22 +1,29 @@
-version: '3.7'
+---
+version: '2'
+
 services:
   ksqldb-server:
-    build: .
+    image: confluentinc/ksqldb-server:latest
+    hostname: ksqldb-server
+    container_name: ksqldb-server
     ports:
-      - "${KSQLDB_SERVER_PORT}:${KSQLDB_SERVER_PORT}"
+      - "8088:8088"
     environment:
-      KSQL_CONFIG_DIR: /etc/ksqldb
-      KSQL_BOOTSTRAP_SERVERS: ${KSQL_BOOTSTRAP_SERVERS}
-      AWS_REGION: ${AWS_REGION}
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      #KSQL_OPTS: "-Djava.security.auth.login.config=/etc/ksqldb/jaas.conf"
-      DEBUG_MODE: "false"  # Set to "true" to enable debugging
-    volumes:
-      - ./ksql-config:/etc/ksqldb
-      - ./plugins:/usr/share/java/plugins
-    tty: true  # Enable interactive mode
-    stdin_open: true  # Keep container open for debugging
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_BOOTSTRAP_SERVERS: b-2.mskatin.pjdcv1.c7.kafka.us-east-1.amazonaws.com:9092,b-1.mskatin.pjdcv1.c7.kafka.us-east-1.amazonaws.com:9092
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+      KSQL_KSQL_COMMAND_TOPIC_REPLICATION_FACTOR: 2
+      KSQL_KSQL_SINK_TOPIC_REPLICATION_FACTOR: 2
+      KSQL_KSQL_STREAMS_REPLICATION_FACTOR: 2
+
+  ksqldb-cli:
+    image: confluentinc/ksqldb-cli:latest
+    container_name: ksqldb-cli
+    depends_on:
+      - ksqldb-server
+    entrypoint: /bin/sh
+    tty: true
 
   ksqldb-ui:
     image: deniskrumko/ksqldb-ui:latest

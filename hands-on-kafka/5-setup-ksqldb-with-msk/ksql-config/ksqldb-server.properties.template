@@ -1,7 +1,0 @@
-ksql.bootstrap.servers=${KSQL_BOOTSTRAP_SERVERS}
-ksql.streams.bootstrap.servers=${KSQL_BOOTSTRAP_SERVERS}
-#ksql.security.protocol=SASL_SSL
-#ksql.sasl.mechanism=AWS_MSK_IAM
-#ksql.sasl.jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required;
-listeners=http://0.0.0.0:8088
-ksql.logging.processing.topic.auto.create=true
