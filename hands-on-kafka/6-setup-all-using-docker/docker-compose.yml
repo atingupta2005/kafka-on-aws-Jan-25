@@ -11,6 +11,11 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
       ZOOKEEPER_TICK_TIME: 2000
+    healthcheck:
+      test: ["CMD", "echo ruok | nc localhost 2181 | grep imok"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   kafka-broker-1:
     build:
@@ -27,7 +32,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
       KAFKA_MIN_INSYNC_REPLICAS: ${KAFKA_MIN_INSYNC_REPLICAS}
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
 
   kafka-broker-2:
     build:
@@ -44,7 +50,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
       KAFKA_MIN_INSYNC_REPLICAS: ${KAFKA_MIN_INSYNC_REPLICAS}
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
 
   kafka-broker-3:
     build:
@@ -61,7 +68,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
       KAFKA_MIN_INSYNC_REPLICAS: ${KAFKA_MIN_INSYNC_REPLICAS}
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
 
   ksqldb-server:
     build:
@@ -75,9 +83,12 @@ services:
     volumes:
       - ./ksql-config:/etc/ksqldb
     depends_on:
-      - kafka-broker-1
-      - kafka-broker-2
-      - kafka-broker-3
+      kafka-broker-1:
+        condition: service_healthy
+      kafka-broker-2:
+        condition: service_healthy
+      kafka-broker-3:
+        condition: service_healthy
 
   ksqldb-ui:
     image: deniskrumko/ksqldb-ui:latest
@@ -86,5 +97,9 @@ services:
       - "${KSQLDB_UI_PORT}:8080"
     environment:
       KSQLDB_SERVER: "http://${CLOUD_VM_PUBLIC_IP}:${KSQLDB_SERVER_PORT}"
+      APP_CONFIG: "/app/config/app-config.yaml"
+    volumes:
+      - ./ksqldb-ui-config:/app/config
     depends_on:
-      - ksqldb-server
+      ksqldb-server:
+        condition: service_healthy
