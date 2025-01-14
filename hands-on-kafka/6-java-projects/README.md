@@ -33,10 +33,13 @@ Here’s a step-by-step guide for setting up and running the project in **Ubuntu
 1. **Update the package list:**
    ```bash
    sudo apt update
+   sudo yum update
    ```
 2. **Install OpenJDK 11 or later:**
    ```bash
    sudo apt install openjdk-11-jdk -y
+   sudo yum install java-11-amazon-corretto -y
+   sudo alternatives --config java
    ```
 3. **Verify the installation:**
    ```bash
@@ -51,7 +54,7 @@ You can configure the Kafka broker IP address as an environment variable and ret
 
 1. **Export the environment variable:**
    ```bash
-   export KAFKA_BROKER_IP="your.kafka.broker.ip:9092"
+   nano .env
    ```
 
 2. Save and recompile the project when changes are made.
@@ -88,7 +91,7 @@ Run the `ProducerDemo` class:
 
 2. Execute the `ProducerDemo` class:
    ```bash
-   ../gradlew run --args='ProducerDemo'
+   ../gradlew run -PmainClass=io.conduktor.demos.kafka.ProducerDemo
    ```
 ---
 

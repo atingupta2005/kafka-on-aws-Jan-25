@@ -17,11 +17,13 @@ public class ProducerDemo {
     public static void main(String[] args) {
         log.info("I am a Kafka Producer!");
 
+        Dotenv dotenv = Dotenv.configure().directory("./").load();
+
         // create Producer Properties
         Properties properties = new Properties();
 
         // connect to 13.94.96.208
-        properties.setProperty("bootstrap.servers", System.getenv("KAFKA_BROKER_IP"));
+        properties.setProperty("bootstrap.servers", dotenv.get("KAFKA_BROKER_IP"));
 
         // set producer properties
         properties.setProperty("key.serializer", StringSerializer.class.getName());

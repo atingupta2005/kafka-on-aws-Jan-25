@@ -18,6 +18,7 @@ public class ConsumerDemo {
 
     public static void main(String[] args) {
         log.info("I am a Kafka Consumer!");
+        Dotenv dotenv = Dotenv.configure().directory("./").load();
 
         String groupId = "my-java-application";
         String topic = "demo_java";
@@ -26,7 +27,7 @@ public class ConsumerDemo {
         Properties properties = new Properties();
 
         // connect to 13.94.96.208
-        properties.setProperty("bootstrap.servers", System.getenv("KAFKA_BROKER_IP"));
+        properties.setProperty("bootstrap.servers", dotenv.get("KAFKA_BROKER_IP"));
 
         // create consumer configs
         properties.setProperty("key.deserializer", StringDeserializer.class.getName());
