@@ -1,0 +1,92 @@
+version: '3.7'
+
+services:
+  zookeeper:
+    build:
+      context: .
+      dockerfile: Dockerfile-zookeeper
+    container_name: zookeeper
+    ports:
+      - "${ZOOKEEPER_PORT}:${ZOOKEEPER_PORT}"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka-broker-1:
+    build:
+      context: .
+      dockerfile: Dockerfile-kafka
+    container_name: kafka-broker-1
+    ports:
+      - "${KAFKA_BROKER_1_PORT}:${KAFKA_BROKER_1_PORT}"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_PORT}
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:${KAFKA_BROKER_1_PORT}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${CLOUD_VM_PUBLIC_IP}:${KAFKA_BROKER_1_PORT}
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
+      KAFKA_MIN_INSYNC_REPLICAS: ${KAFKA_MIN_INSYNC_REPLICAS}
+    depends_on:
+      - zookeeper
+
+  kafka-broker-2:
+    build:
+      context: .
+      dockerfile: Dockerfile-kafka
+    container_name: kafka-broker-2
+    ports:
+      - "${KAFKA_BROKER_2_PORT}:${KAFKA_BROKER_2_PORT}"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_PORT}
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:${KAFKA_BROKER_2_PORT}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${CLOUD_VM_PUBLIC_IP}:${KAFKA_BROKER_2_PORT}
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
+      KAFKA_MIN_INSYNC_REPLICAS: ${KAFKA_MIN_INSYNC_REPLICAS}
+    depends_on:
+      - zookeeper
+
+  kafka-broker-3:
+    build:
+      context: .
+      dockerfile: Dockerfile-kafka
+    container_name: kafka-broker-3
+    ports:
+      - "${KAFKA_BROKER_3_PORT}:${KAFKA_BROKER_3_PORT}"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_PORT}
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:${KAFKA_BROKER_3_PORT}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${CLOUD_VM_PUBLIC_IP}:${KAFKA_BROKER_3_PORT}
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
+      KAFKA_MIN_INSYNC_REPLICAS: ${KAFKA_MIN_INSYNC_REPLICAS}
+    depends_on:
+      - zookeeper
+
+  ksqldb-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-ksqldb
+    container_name: ksqldb-server
+    ports:
+      - "${KSQLDB_SERVER_PORT}:${KSQLDB_SERVER_PORT}"
+    environment:
+      KSQL_BOOTSTRAP_SERVERS: "${CLOUD_VM_PUBLIC_IP}:${KAFKA_BROKER_1_PORT},${CLOUD_VM_PUBLIC_IP}:${KAFKA_BROKER_2_PORT},${CLOUD_VM_PUBLIC_IP}:${KAFKA_BROKER_3_PORT}"
+    volumes:
+      - ./ksql-config:/etc/ksqldb
+    depends_on:
+      - kafka-broker-1
+      - kafka-broker-2
+      - kafka-broker-3
+
+  ksqldb-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile-ksqldb-ui
+    container_name: ksqldb-ui
+    ports:
+      - "${KSQLDB_UI_PORT}:8080"
+    environment:
+      KSQLDB_SERVER: "http://${CLOUD_VM_PUBLIC_IP}:${KSQLDB_SERVER_PORT}"
+    depends_on:
+      - ksqldb-server

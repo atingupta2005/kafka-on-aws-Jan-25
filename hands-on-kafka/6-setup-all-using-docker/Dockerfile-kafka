@@ -1,0 +1,3 @@
+FROM confluentinc/cp-kafka:6.2.0
+EXPOSE 9092
+CMD ["kafka-server-start", "/etc/kafka/server.properties"]

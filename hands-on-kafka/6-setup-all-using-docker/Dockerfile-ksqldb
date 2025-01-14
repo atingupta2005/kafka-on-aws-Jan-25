@@ -1,0 +1,3 @@
+FROM confluentinc/ksqldb-server:latest
+EXPOSE 8088
+CMD ["/etc/confluent/docker/run"]
