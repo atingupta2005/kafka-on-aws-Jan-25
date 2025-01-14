@@ -1,0 +1,21 @@
+[servers]
+
+# Localhost configuration
+[servers.localhost]
+url = 'http://ksqldb-server:8088'
+topic_link = "http://localhost:8090/topics/{}"  # Link to view Kafka topics in Kafka UI
+
+# Development environment configuration
+[servers.development]
+url = "http://your-development-ksqldb.com"   # ksqlDB server URL for development
+topic_link = "http://your-development-kafka-ui.com/topics/{}"  # Link for Kafka topics
+
+# Production environment configuration
+[servers.production]
+url = "http://your-production-ksqldb.com"    # ksqlDB server URL for production
+topic_link = "http://your-production-kafka-ui.com/topics/{}"  # Kafka topics link
+warning_message = "This is a production environment. Please do not modify existing streams/queries."  # Alert message for production
+
+[history]
+enabled = true  # Enable query history
+size = 50       # Maximum number of queries to keep in history
