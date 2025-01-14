@@ -11,7 +11,6 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
       ZOOKEEPER_TICK_TIME: 2000
-    entrypoint: ["sh", "-c", "sleep 30 && /docker-entrypoint.sh"]
 
   kafka-broker-1:
     build:
