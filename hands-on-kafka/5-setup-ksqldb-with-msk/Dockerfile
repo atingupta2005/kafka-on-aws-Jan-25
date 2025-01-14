@@ -11,3 +11,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Expose the ksqlDB server port
 EXPOSE 8088
+
+# Use the custom entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
