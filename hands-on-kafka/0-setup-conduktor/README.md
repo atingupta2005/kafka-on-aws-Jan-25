@@ -179,7 +179,7 @@ To ensure Docker and Docker Compose are working correctly, perform the following
    #### **For Amazon Linux and Ubuntu 22:**
    ```bash
    cd ~
-   curl -L https://releases.conduktor.io/quick-start -o docker-compose.yml
+   #curl -L https://releases.conduktor.io/quick-start -o docker-compose.yml
    sudo docker-compose up -d
    ```
 
