@@ -1,6 +1,8 @@
 FROM confluentinc/ksqldb-server:latest
 
 # Copy additional debugging tools (optional)
+user root
+
 RUN yum update && yum install -y net-tools curl vim
 
 # Copy the custom entrypoint script
