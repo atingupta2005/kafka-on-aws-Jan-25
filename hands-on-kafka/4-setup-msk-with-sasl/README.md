@@ -133,12 +133,12 @@ keytool -list -v -keystore ~/truststore.jks -alias AWSMSKRoot
 1. **Test Kafka Producer:**
    Use a Kafka producer with the SASL SCRAM configuration to send messages to a topic:
    ```bash
-   export BS_SERVER="b-2.agcluster3.dfkesh.c13.kafka.us-east-1.amazonaws.com:9092,b-1.agcluster3.dfkesh.c13.kafka.us-east-1.amazonaws.com:9092"
+   export BS_SERVER_SASL="b-2.agcluster3.dfkesh.c13.kafka.us-east-1.amazonaws.com:9092,b-1.agcluster3.dfkesh.c13.kafka.us-east-1.amazonaws.com:9092"
    ```
 
    ```bash
    kafka-topics.sh --create \
-       --bootstrap-server $BS_SERVER \
+       --bootstrap-server $BS_SERVER_SASL \
        --replication-factor 2 \
        --partitions 1 \
        --topic test-topic \
@@ -146,18 +146,18 @@ keytool -list -v -keystore ~/truststore.jks -alias AWSMSKRoot
    ```
 
    ```bash
-   kafka-topics.sh --bootstrap-server $BS_SERVER --list --command-config ~/kafka-client/kafka-client.properties
+   kafka-topics.sh --bootstrap-server $BS_SERVER_SASL --list --command-config ~/kafka-client/kafka-client.properties
    ```
 
    ```bash
-   kafka-console-producer.sh --broker-list $BS_SERVER --topic test-topic \
+   kafka-console-producer.sh --broker-list $BS_SERVER_SASL --topic test-topic \
      --producer.config ~/kafka-client/kafka-client.properties
    ```
 
 2. **Test Kafka Consumer:**
    Use a Kafka consumer to read messages:
    ```bash
-   kafka-console-consumer.sh --bootstrap-server $BS_SERVER --topic test-topic \
+   kafka-console-consumer.sh --bootstrap-server $BS_SERVER_SASL --topic test-topic \
      --consumer.config ~/kafka-client/kafka-client.properties
    ```
 
