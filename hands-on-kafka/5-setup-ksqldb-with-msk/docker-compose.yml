@@ -11,11 +11,12 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       KSQL_OPTS: "-Djava.security.auth.login.config=/etc/ksqldb/jaas.conf"
+      DEBUG_MODE: "false"  # Set to "true" to enable debugging
     volumes:
       - ./ksql-config:/etc/ksqldb
       - ./plugins:/usr/share/java/plugins
-    tty: true  # Optional, for interactive debugging
-    stdin_open: true  # Optional, for interactive debugging
+    tty: true  # Enable interactive mode
+    stdin_open: true  # Keep container open for debugging
 
   ksqldb-ui:
     image: deniskrumko/ksqldb-ui:latest
