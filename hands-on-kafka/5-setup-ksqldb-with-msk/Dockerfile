@@ -1,7 +1,7 @@
 FROM confluentinc/ksqldb-server:latest
 
-# Switch to root user to modify file permissions
-USER root
+# Copy additional debugging tools (optional)
+RUN yum update && yum install -y net-tools curl vim
 
 # Copy the custom entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -11,6 +11,3 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Expose the ksqlDB server port
 EXPOSE 8088
-
-# Use the custom entrypoint
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

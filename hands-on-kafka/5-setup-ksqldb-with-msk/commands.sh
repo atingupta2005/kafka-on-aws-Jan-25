@@ -1,3 +1,8 @@
+sudo yum update
+sudo yum install git -y
+git clone https://github.com/atingupta2005/kafka-on-aws-Jan-25
+cd ~/kafka-on-aws-Jan-25/hands-on-kafka/5-setup-ksqldb-with-msk
+
 nano .env
 nano ksql-config/ksql-server.properties
 docker-compose up -d

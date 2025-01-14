@@ -10,7 +10,7 @@ services:
       AWS_REGION: ${AWS_REGION}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      KSQL_OPTS: "-Djava.security.auth.login.config=/etc/ksqldb/jaas.conf"
+      #KSQL_OPTS: "-Djava.security.auth.login.config=/etc/ksqldb/jaas.conf"
       DEBUG_MODE: "false"  # Set to "true" to enable debugging
     volumes:
       - ./ksql-config:/etc/ksqldb
