@@ -1,30 +1,33 @@
-curl -fsSL https://get.docker.com -o install-docker.sh
-sudo sh install-docker.sh
+sudo yum install git htop tree -y
+
+sudo yum update -y
+sudo yum install -y docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo docker ps
+sudo systemctl restart docker
+
 sudo usermod -aG docker $USER
-exit
 
 mkdir -p ~/.docker/cli-plugins/
 
-curl -SL https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
 
-chmod +x ~/.docker/cli-plugins/docker-compose
-
-docker compose version
-
-
-git clone https://github.com/atingupta2005/kafka-stack-docker-compose
+git clone https://github.com/atingupta2005/kafka-on-aws-Jan-25
 
 # Get public ip address of the cloud vm and update below
 
-cd kafka-stack-docker-compose
+cd kafka-on-aws-Jan-25/hands-on-kafka/0-setup-conduktor/02-conduktor-kafka-sqldb-sqldb-ui-stack
 
 cat .env
 
-echo "EXTERNAL_PUBLIC_IP=52.170.103.92" >> .env
+echo "EXTERNAL_PUBLIC_IP=54.80.95.127" > .env
 
 cat .env
 
-docker compose -f full-stack-zk-multiple-kafka-multiple-full-stack-ag.yml up -d
+sudo docker-compose -f full-stack-zk-multiple-kafka-multiple-full-stack-ag.yml up -d
 
 Conduktor Platform: 
  - A GUI tool for managing Kafka and its ecosystem.
