@@ -90,7 +90,8 @@ Run the `ProducerDemo` class:
 
 1. Navigate to the `kafka-java` module:
    ```bash
-   cd ~/kafka-on-aws-Jan-25/hands-on-kafka/6-java-projects/kafka-java
+   cd ~/kafka-on-aws-Jan-25/hands-on-kafka/6-java-projects/kafka-java/kafka-basics
+   git pull
    ```
 
 2. Execute the `ProducerDemo` class:
