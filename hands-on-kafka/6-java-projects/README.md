@@ -37,6 +37,7 @@ Here’s a step-by-step guide for setting up and running the project in **Ubuntu
    ```
 2. **Install OpenJDK 11 or later:**
    ```bash
+   sudo yum install git htop tree -y
    sudo apt install openjdk-11-jdk -y
    sudo yum install java-11-amazon-corretto -y
    sudo alternatives --config java
@@ -54,6 +55,9 @@ You can configure the Kafka broker IP address as an environment variable and ret
 
 1. **Export the environment variable:**
    ```bash
+   cd ~
+   git clone https://github.com/atingupta2005/kafka-on-aws-Jan-25
+   cd ~/kafka-on-aws-Jan-25/hands-on-kafka/6-java-projects/kafka-java/kafka-basics
    nano .env
    ```
 
@@ -66,7 +70,7 @@ Use the Gradle wrapper to resolve dependencies and build the project:
 
 1. **Navigate to the project root:**
    ```bash
-   cd kafka-java
+   cd ~/kafka-on-aws-Jan-25/hands-on-kafka/6-java-projects/kafka-java
    ```
 
 2. **Grant execute permission to `gradlew`:**
@@ -84,9 +88,9 @@ Use the Gradle wrapper to resolve dependencies and build the project:
 ### **4. Run the Code**
 Run the `ProducerDemo` class:
 
-1. Navigate to the `kafka-basics` module:
+1. Navigate to the `kafka-java` module:
    ```bash
-   cd kafka-basics
+   cd ~/kafka-on-aws-Jan-25/hands-on-kafka/6-java-projects/kafka-java
    ```
 
 2. Execute the `ProducerDemo` class:
