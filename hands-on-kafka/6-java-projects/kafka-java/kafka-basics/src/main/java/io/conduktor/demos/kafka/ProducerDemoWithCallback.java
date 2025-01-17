@@ -37,9 +37,9 @@ public class ProducerDemoWithCallback {
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
 
-        for (int j=0; j<10; j++){
+        for (int j=0; j<1000; j++){
 
-            for (int i=0; i<30; i++){
+            for (int i=0; i<30000; i++){
 
                 // create a Producer Record
                 ProducerRecord<String, String> producerRecord =
