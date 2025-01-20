@@ -26,17 +26,10 @@ Before starting, ensure the following:
    Ensure your MSK cluster is configured to use TLS encryption. SASL SCRAM requires SSL for secure communication.
 
 2. **Tools and Permissions:**
-   - AWS CLI installed and configured:
-     ```bash
-     aws configure
-     ```
    - IAM permissions to manage MSK, Secrets Manager, and KMS.
 
 3. **Custom KMS Key:**  
-   MSK requires a custom AWS KMS key to encrypt secrets. You can create one using the **KMS Console** or CLI:
-   ```bash
-   aws kms create-key --description "MSK KMS Key"
-   ```
+   MSK requires a custom AWS KMS key to encrypt secrets. You can create one using the **KMS Console**:
 
 ---
 
