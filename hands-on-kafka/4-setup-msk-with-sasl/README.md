@@ -139,6 +139,21 @@ keytool -list -v -keystore ~/truststore.jks -alias AWSMSKRoot
    ```
 
    ```bash
+   sudo yum update -y
+   sudo yum install java-11-amazon-corretto-devel -y
+   cd ~
+   wget https://archive.apache.org/dist/kafka/3.6.0/kafka_2.13-3.6.0.tgz
+   tar -xzf kafka_2.13-3.6.0.tgz
+   sudo mkdir -p /usr/local/kafka
+   sudo cp -r kafka_2.13-3.6.0/* /usr/local/kafka
+   echo 'export KAFKA_HOME=/usr/local/kafka' >> ~/.bashrc
+   echo 'export PATH=$PATH:$KAFKA_HOME/bin' >> ~/.bashrc
+   source ~/.bashrc
+   echo $KAFKA_HOME
+   echo $PATH
+   ```
+
+   ```bash
    kafka-topics.sh --create \
        --bootstrap-server $BS_SERVER_SASL \
        --replication-factor 2 \
