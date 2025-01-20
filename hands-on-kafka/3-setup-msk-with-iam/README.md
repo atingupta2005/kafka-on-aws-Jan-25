@@ -8,7 +8,7 @@ This guide provides detailed steps to set up a Virtual Machine (VM) outside of t
 
 - A Linux VM (outside AWS network) with `sudo` privileges.
 - AWS account with IAM user access to manage MSK clusters.
-- AWS CLI installed and configured.
+- AWS CLI installed and configured (Ottional).
 - Kafka and OpenJDK 11 installation on the VM.
 - Basic understanding of Kafka, IAM roles, and MSK configuration.
 
@@ -44,7 +44,7 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
 
 ### **Step 3: Create and Attach Policy to IAM User**
 
-1. **Create IAM Policy for MSK Access:**
+1. **Create IAM Policy for MSK Access (Only if required):**
    In AWS IAM, create a policy that grants access to the MSK cluster. Replace `<cluster-arn>` with your actual cluster ARN.
    ```json
    {
@@ -58,13 +58,14 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
            "kafka:DescribeTopic",
            "kafka:GetBootstrapBrokers"
          ],
-         "Resource": "<cluster-arn>"
+         "Resource": "*"
        }
      ]
    }
    ```
 
-2. **Attach Policy to IAM User:**
+2. **Attach Policy to IAM User (Only if required):**
+   - This step is only needed if IAM User don't already have required permissions.
    Attach the policy to the IAM user that will be interacting with the MSK cluster.
 
 3. **Generate Keys for IAM User:**
@@ -74,32 +75,7 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
 ---
 
 ### **Step 4: Install and Configure AWS CLI on the VM**
-
-1. **Install AWS CLI:**
-   On your VM, install AWS CLI and unzip the installation package:
-
-   ```bash
-   cd ~
-   sudo apt update
-   sudo apt install zip unzip tree -y
-   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-   unzip awscliv2.zip
-   sudo ./aws/install
-   ```
-
-2. **Verify AWS CLI Installation:**
-   ```bash
-   aws --version
-   ```
-
-3. **Configure AWS CLI:**
-   Set up your AWS credentials using the IAM user access keys:
-
-   ```bash
-   aws configure
-   ```
-
-   Alternatively, you can manually export your credentials in the shell:
+- Export credentials in the shell:
    ```bash
    export AWS_ACCESS_KEY_ID=<your-access-key-id>
    export AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
@@ -108,8 +84,23 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
 ---
 
 ### **Step 5: Install OpenJDK 11 and Kafka on the VM**
+1. **Install OpenJDK 11 for Amazon Linux:**
+```
+sudo yum update -y
+sudo yum install java-11-amazon-corretto-devel -y
+cd ~
+wget https://archive.apache.org/dist/kafka/3.6.0/kafka_2.13-3.6.0.tgz
+tar -xzf kafka_2.13-3.6.0.tgz
+sudo mkdir -p /usr/local/kafka
+sudo cp -r kafka_2.13-3.6.0/* /usr/local/kafka
+echo 'export KAFKA_HOME=/usr/local/kafka' >> ~/.bashrc
+echo 'export PATH=$PATH:$KAFKA_HOME/bin' >> ~/.bashrc
+source ~/.bashrc
+echo $KAFKA_HOME
+echo $PATH
+```
 
-1. **Install OpenJDK 11:**
+1. **Install OpenJDK 11 for Ubuntu:**
    On your VM, install OpenJDK 11:
 
    ```bash
@@ -127,11 +118,12 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
    mv kafka_2.13-3.6.0 ~/kafka
    ```
 
-3. **Set Environment Variables for Kafka:**
+3. **Set classpath for IAM JAR File:**
    To make Kafka accessible from anywhere, modify your `.bashrc` file:
 
    ```bash
    echo 'export PATH=$PATH:~/kafka/bin' >> ~/.bashrc
+   ls ls -al ~/kafka/libs/
    echo 'export CLASSPATH=$CLASSPATH:/home/$USER/kafka/libs/aws-msk-iam-auth.jar' >> ~/.bashrc
    source ~/.bashrc
    ```
@@ -153,7 +145,9 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
    ```bash
    mkdir -p ~/kafka/libs
    curl -L -o ~/kafka/libs/aws-msk-iam-auth.jar https://github.com/aws/aws-msk-iam-auth/releases/download/v2.2.0/aws-msk-iam-auth-2.2.0-all.jar
-   ```
+   ls -al ~/kafka/libs/
+   ls -al ~/kafka/libs/aws-msk-iam-auth.jar
+      ```
 
 2. **Verify JAR File:**
    Ensure that the JAR file contains the IAM client handler:
@@ -182,41 +176,14 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
 
 ### **Step 7: Interact with MSK Cluster**
 
-1. **List MSK Clusters:**
-   List the MSK clusters available:
-
-   ```bash
-   aws kafka list-clusters
-   ```
-
-2. **Describe MSK Cluster:**
-   Retrieve the details of your MSK cluster:
-
-   ```bash
-   aws kafka describe-cluster --cluster-arn <cluster-arn>
-   ```
-
-3. **Get Bootstrap Brokers:**
-   Obtain the bootstrap brokers for your MSK cluster:
-
-   ```bash
-   aws kafka get-bootstrap-brokers --cluster-arn <cluster-arn>
-   ```
-
-   Export the bootstrap server address for use in Kafka commands:
-
-   ```bash
-   export BS_SERVER=<bootstrap-brokers-address>
-   ```
-
-4. **List Kafka Topics:**
+1. **List Kafka Topics:**
    List the Kafka topics using the `client.properties` file:
 
    ```bash
    kafka-topics.sh --bootstrap-server $BS_SERVER --list --command-config ~/client.properties
    ```
 
-5. **Create a Kafka Topic:**
+2. **Create a Kafka Topic:**
    Create a new topic called `test-topic` with replication factor 2 and 1 partition:
 
    ```bash
@@ -228,7 +195,7 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
       --command-config ~/client.properties
    ```
 
-6. **Verify Kafka Topic Creation:**
+3. **Verify Kafka Topic Creation:**
    List all topics again to verify the `test-topic` was successfully created:
 
    ```bash
@@ -239,20 +206,10 @@ You can create a VM on any platform (e.g., on-premise, VMware, or a third-party 
 
 ### **Step 8: Troubleshooting**
 
-1. **Check Kafka Logs:**
-   If you encounter issues, check the Kafka logs for errors:
-   
-   ```bash
-   tail -f ~/kafka/logs/server.log
-   ```
-
-2. **Check IAM Policies:**
+1. **Check IAM Policies:**
    Ensure the IAM user has the necessary policies attached and that your access keys are correctly configured.
 
-3. **Verify SSL/TLS Configuration:**
-   If you are having trouble with SSL/TLS connections, ensure the MSK cluster is configured correctly for TLS and that the required certificates are available on your VM.
-
-4. **Check Network Connectivity:**
+2. **Check Network Connectivity:**
    Verify that your VM can reach the MSK cluster's bootstrap brokers by testing the network connection using `telnet` or similar tools.
 
 ---
