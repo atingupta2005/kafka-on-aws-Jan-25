@@ -115,6 +115,9 @@ keytool -help
    Use `keytool` to import the root certificate into a Java Keystore (JKS):
    ```bash
    keytool -import -trustcacerts -alias AWSMSKRoot -file ~/root.pem -keystore ~/truststore.jks
+   ```
+
+   ```bash
    chmod 600 ~/truststore.jks
    ```
 3. **Distribute Trust Store:**
