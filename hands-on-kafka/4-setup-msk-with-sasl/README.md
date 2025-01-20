@@ -105,6 +105,12 @@ cat ~/root.pem
 openssl x509 -in root.pem -text -noout
 ```
 
+```
+sudo amazon-linux-extras enable corretto8
+sudo yum install java-1.8.0-amazon-corretto-devel
+keytool -help
+```
+
 2. **Create Trust Store:**
    Use `keytool` to import the root certificate into a Java Keystore (JKS):
    ```bash
