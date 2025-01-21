@@ -59,6 +59,10 @@ AWS MSK acts as the backbone for building these pipelines, ensuring scalability,
 Producers publish raw data to Kafka topics.
 
 **Example: Log Data Producer (Python):**
+```
+kafka-console-producer.sh --broker-list $BS_SERVER --topic raw-data-topic
+```
+
 ```python
 from kafka import KafkaProducer
 
