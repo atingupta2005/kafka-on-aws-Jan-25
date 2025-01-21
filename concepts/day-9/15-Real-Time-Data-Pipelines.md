@@ -46,7 +46,11 @@ AWS MSK acts as the backbone for building these pipelines, ensuring scalability,
 2. **Create Kafka Topics:**
    - Use the AWS CLI or MSK console:
      ```bash
-     aws kafka create-topic --cluster-arn <cluster-arn> --topic-name raw-data-topic --partitions 3 --replication-factor 3
+     kafka-topics.sh --create \
+       --bootstrap-server $BS_SERVER \
+       --replication-factor 3 \
+       --partitions 3 \
+       --topic raw-data-topic
      ```
 
 ---
