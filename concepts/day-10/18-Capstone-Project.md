@@ -46,10 +46,12 @@ A logistics company needs a real-time monitoring system to track its fleet of ve
 2. **Create Kafka Topics:**
    - Use AWS CLI to create topics:
      ```bash
-     aws kafka create-topic --cluster-arn <cluster-arn> --topic-name raw-data-topic --partitions 3 --replication-factor 3
-     aws kafka create-topic --cluster-arn <cluster-arn> --topic-name processed-data-topic --partitions 3 --replication-factor 3
-     aws kafka create-topic --cluster-arn <cluster-arn> --topic-name alerts-topic --partitions 3 --replication-factor 3
+     export BS_SERVER=""
+     kafka-topics.sh --create --bootstrap-server $BS_SERVER --replication-factor 3 --partitions 3 --topic raw-data-topic
+     kafka-topics.sh --create --bootstrap-server $BS_SERVER --replication-factor 3 --partitions 3 --topic processed-data-topic
+     kafka-topics.sh --create --bootstrap-server $BS_SERVER --replication-factor 3 --partitions 3 --topic alerts-topic
      ```
+
 
 ---
 
