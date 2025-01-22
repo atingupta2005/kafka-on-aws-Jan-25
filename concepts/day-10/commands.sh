@@ -30,3 +30,12 @@ zip -r lambda_function.zip python lambda_function.py
 
 # 10. Deactivate the virtual environment (optional but recommended)
 deactivate
+
+# 11. Create an S3 bucket to store the deployment package
+aws s3 mb s3://atin-lambda-deployment-bucket --region us-east-1
+
+# 12. Upload the deployment package to the S3 bucket
+aws s3 cp lambda_function.zip s3://atin-lambda-deployment-bucket/
+
+# 13. Verify the file upload
+aws s3 ls s3://atin-lambda-deployment-bucket/
