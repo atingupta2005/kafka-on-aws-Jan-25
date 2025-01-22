@@ -2,6 +2,7 @@ import json
 import base64
 import logging
 from confluent_kafka import Producer
+import traceback
 
 # Configure logging
 logger = logging.getLogger()
